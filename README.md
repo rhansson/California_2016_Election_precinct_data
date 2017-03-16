@@ -31,18 +31,30 @@ I used the following tools:
 #### ArcGIS
 [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm)
 
-#### Loading data into PostGIS
-The first step is to extract the relevant precinct voting information from the original csv file (not provided in this repo): 
+#### Loading data into PostGIS db
+The first step is to extract the relevant precinct voting information from the original csv file (_not provided in this repo_): 
 ```
 $ head -24569 all_precinct_results.csv > all_precinct_results2.csv
 ```
-We can then import this file into the table _precinct_results_ by executing the SQL script _import_precincts.sql_:
+We can then import this file into the table *precinct_results* by executing the SQL script *import_precincts.sql*:
 ```
 # \i postgis/import_precincts.sql
 # SELECT COUNT(*) FROM precinct_results;
  count 
 -------
  24568
+(1 row)
+```
+Secondly, we import the precinct boundaries into the table *precinct* using OGR (optionally projecting back to WSG84):
+```
+$ ogr2ogr -f PostgreSQL PG:"dbname='YOUR_NAME' user='YOUR_USER' password='YOUR_PW'" -nln precinct -select "pct16" -lco GEOM_TYPE="geography" -lco GEOMETRY_NAME=geog -s_srs EPSG:3310 -t_srs "EPSG:4326" ca_precincts_topo.json
+```
+We can now access the voting data spatially via a join:
+```
+# SELECT b.pres_trump_per FROM precinct a INNER JOIN precinct_results b ON a.pct16=b.pct16 WHERE a.pct16 = '037-7300001A';
+ pres_trump_per 
+----------------
+            100
 (1 row)
 ```
 
