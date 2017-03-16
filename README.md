@@ -1,7 +1,7 @@
 # California_2016_Election_precinct_data
 California precincts in TopoJSON format
 
-When developing [geotuple.org](http://rhansson.github.io/geotuple/), I was looking for detailed voting district (precinct) boundaries and came across [this repository](https://github.com/datadesk/california-2016-election-precinct-maps) from the __The Los Angeles Times Data Desk__. They had already done an excellent job of organizing all the information, but I thought I could tidy up the geographic data just a bit for my needs.
+When developing [geotuple.org](http://rhansson.github.io/geotuple/), I was looking for detailed voting district (precinct) boundaries and came across [this repository](https://github.com/datadesk/california-2016-election-precinct-maps) from the __Los Angeles Times Data Viz team__. They had already done an excellent job of organizing all the information [published here](http://www.latimes.com/projects/la-pol-ca-california-neighborhood-election-results/), but I thought I could tidy up the geographic data just a bit for my needs.
 
 ## Results
 The original shapefile (*not provided in this repo*) is __95M__ while the resulting [TopoJSON](https://github.com/topojson) comes in at __*10M*__.
