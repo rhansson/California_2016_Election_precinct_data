@@ -66,7 +66,8 @@ $ geo2topo pct16=merged.geojson > merged.topojson
  buffer.js:495
     throw new Error('"toString()" failed');
 ```
-*Presumably due to too many coordinates*. [Potential limitation in nodejs](https://github.com/nodejs/node/issues/3175)
+Seemingly beacuse of hitting a [limitation in nodejs](https://github.com/nodejs/node/issues/3175) (*presumably due to too many coordinates*).
+
 Simplifying the input fixes the problem:
 ```
 $ ogr2ogr -f "GeoJSON" merged.geojson -simplify 5 -t_srs EPSG:3310 merged.shp
