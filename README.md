@@ -1,7 +1,7 @@
 # California_2016_Election_precinct_data
 California precincts in TopoJSON format
 
-When developing [geotuple.org](http://rhansson.github.io/geotuple/), I was looking for detailed voting district (precinct) boundaries and came across [this repository](https://github.com/datadesk/california-2016-election-precinct-maps) from the __Los Angeles Times Data Viz team__. They had already done an excellent job of organizing all the information [published here](http://www.latimes.com/projects/la-pol-ca-california-neighborhood-election-results/), but I thought I could tidy up the geographic data just a bit for my needs.
+When developing [geotuple.org](http://rhansson.github.io/geotuple/), I was looking for detailed voting district (precinct) boundaries and came across [this repository](https://github.com/datadesk/california-2016-election-precinct-maps){:target="_blank"} from the __Los Angeles Times Data Viz team__. They had already done an excellent job of organizing all the information [published here](http://www.latimes.com/projects/la-pol-ca-california-neighborhood-election-results/){:target="_blank"}, but I thought I could tidy up the geographic data just a bit for my needs.
 
 ## Results
 The original shapefile (*not provided in this repo*) is __95M__ while the resulting [TopoJSON](https://github.com/topojson) comes in at __*10M*__.
@@ -23,10 +23,10 @@ The main objective is to simplify the polygon geometry, by reducing #coordinates
 
 ### Prerequisites
 I used the following tools:
-+ [OGR/GDAL](http://www.gdal.org/ogr2ogr.html)
-+ [TopoJSON CLI](https://github.com/topojson/topojson/blob/master/README.md#api-reference)
-+ [ArcGIS](http://desktop.arcgis.com/en/)
-+ [PostGIS](http://postgis.net/)
++ [OGR/GDAL](http://www.gdal.org/ogr2ogr.html){:target="_blank"}
++ [TopoJSON CLI](https://github.com/topojson/topojson/blob/master/README.md#api-reference){:target="_blank"}
++ [ArcGIS](http://desktop.arcgis.com/en/){:target="_blank"}
++ [PostGIS](http://postgis.net/){:target="_blank"}
 
 ### Combining county shapefiles
 This inital step combines the original county shapefiles (*not provided in this repo*) into one:
@@ -44,7 +44,7 @@ $ ogr2ogr -f "ESRI Shapefile" merged2.shp -t_srs EPSG:3310 merged.shp
 In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case, as seen in this example between the Fresno and Madera counties along the San Joaqin River:
 ![Fig 1:](https://github.com/rhansson/California_2016_Election_precinct_data/blob/master/images/sanj_sliver1.png "sliver")
 
-Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
+Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm){:target="_blank"} command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
 
 This collapses the gap (sliver) as shown here:
 ![Fig 2:](https://github.com/rhansson/California_2016_Election_precinct_data/blob/master/images/sanj_sliver2.png "resolved")
@@ -62,7 +62,7 @@ $ geo2topo merged2_geo.json > merged2_topo.json
 $ toposimplify -p 1 -f merged2_topo.json > merged3_topo.json
 $ topoquantize 1e6 merged3_topo.json > ca_precincts_topo.json
 ```
-For reference, see: [Command-Line Cartography, Part 3](https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n)
+For reference, see: [Command-Line Cartography, Part 3](https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n){:target="_blank"}
 
 #### Loading data into PostGIS (*optional*)
 The first step is to extract the relevant precinct voting information from the original csv file (*not provided in this repo*): 
@@ -100,7 +100,7 @@ $ geo2topo pct16=merged.geojson > merged.topojson
     throw new Error('"toString()" failed');
     ...
 ```
-Seemingly beacuse of hitting a [limitation in nodejs](https://github.com/nodejs/node/issues/3175) (*presumably due to too many coordinates*).
+Seemingly beacuse of hitting a [limitation in nodejs](https://github.com/nodejs/node/issues/3175){:target="_blank"} (*presumably due to too many coordinates*).
 
 Simplifying the input fixes the problem:
 ```
