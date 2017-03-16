@@ -19,6 +19,16 @@ $ du -h ca*
 However, as the resulting file has been simplified a more equitable comparison is a reduction of about 50%
 
 ## Process
-### ArcGIS
-### PostGIS
+### Prerequisites
+I used the following tools:
++ [OGR/GDAL](http://www.gdal.org/ogr2ogr.html)
++ [TopoJSON CLI](https://github.com/topojson/topojson/blob/master/README.md#api-reference))
+```
+$ npm install -g topojson
+```
++ [ArcGIS](http://desktop.arcgis.com/en/) *Optional* - output is available in arcgis folder
+
+#### ArcGIS
+[_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm)
+#### PostGIS
 ## Issues
