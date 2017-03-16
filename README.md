@@ -41,7 +41,7 @@ $ ogr2ogr -f "ESRI Shapefile" merged2.shp -t_srs EPSG:3310 merged.shp
 ```
 
 ### Eliminating gaps between county polygons
-In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case between counties, as seen in this example along the San Jouaqin River:
+In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case, as seen in this example between the Fresno and Madera counties along the San Joaqin River:
 x
 
 Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
