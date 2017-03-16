@@ -36,7 +36,7 @@ The first step is to extract the relevant precinct voting information from the o
 ```
 $ head -24569 all_precinct_results.csv > all_precinct_results2.csv
 ```
-We can then import this file into the db by executing the SQL script "import_precincts.sql":
+We can then import this file into the table _precinct_results_ by executing the SQL script _import_precincts.sql_:
 ```
 # \i postgis/import_precincts.sql
 # SELECT COUNT(*) FROM precinct_results;
