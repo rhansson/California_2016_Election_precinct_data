@@ -1,0 +1,81 @@
+
+<ResultView Tool='Multipart To Singlepart'>
+<Inputs>
+<Parameter Label='Input Features' Type='Layer'>merged</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>sp.shp</Parameter>
+</Outputs>
+
+
+<ResultView Tool='Project'>
+<Inputs>
+<Parameter Label='Input Dataset or Feature Class' Type='Layer'>sp</Parameter>
+<Parameter Label='Output Coordinate System' Type='Scalar'>PROJCS[&apos;NAD_1983_California_Teale_Albers&apos;,GEOGCS[&apos;GCS_North_American_1983&apos;,DATUM[&apos;D_North_American_1983&apos;,SPHEROID[&apos;GRS_1980&apos;,6378137.0,298.257222101]],PRIMEM[&apos;Greenwich&apos;,0.0],UNIT[&apos;Degree&apos;,0.0174532925199433]],PROJECTION[&apos;Albers&apos;],PARAMETER[&apos;False_Easting&apos;,0.0],PARAMETER[&apos;False_Northing&apos;,-4000000.0],PARAMETER[&apos;Central_Meridian&apos;,-120.0],PARAMETER[&apos;Standard_Parallel_1&apos;,34.0],PARAMETER[&apos;Standard_Parallel_2&apos;,40.5],PARAMETER[&apos;Latitude_Of_Origin&apos;,0.0],UNIT[&apos;Meter&apos;,1.0]]</Parameter>
+<Parameter Label='Geographic Transformation' Type='Scalar'>WGS_1984_(ITRF00)_To_NAD_1983</Parameter>
+<Parameter Label='Input Coordinate System' Type='Scalar'>GEOGCS[&apos;GCS_WGS_1984&apos;,DATUM[&apos;D_WGS_1984&apos;,SPHEROID[&apos;WGS_1984&apos;,6378137.0,298.257223563]],PRIMEM[&apos;Greenwich&apos;,0.0],UNIT[&apos;Degree&apos;,0.0174532925199433]]</Parameter>
+<Parameter Label='Preserve Shape' Type='Scalar'>false</Parameter>
+<Parameter Label='Vertical' Type='Scalar'>false</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Dataset or Feature Class' Type='Dataset'>sp_prj.shp</Parameter>
+</Outputs>
+
+
+<ResultView Tool='Repair Geometry'>
+<Inputs>
+<Parameter Label='Input Features' Type='Layer'>sp_prj</Parameter>
+<Parameter Label='Delete Features with Null Geometry' Type='Scalar'>true</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>sp_prj</Parameter>
+</Outputs>
+
+
+<ResultView Tool='Feature To Point'>
+<Inputs>
+<Parameter Label='Input Features' Type='Layer'>sp_prj</Parameter>
+<Parameter Label='Inside' Type='Scalar'>true</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>splab.shp</Parameter>
+</Outputs>
+
+
+<ResultView Tool='Feature To Polygon'>
+<Inputs>
+<Parameter Label='Input Features' Type='Dataset'>sp_prj</Parameter>
+<Parameter Label='Preserve attributes' Type='Scalar'>true</Parameter>
+<Parameter Label='Label Features' Type='Layer'>splab</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>sp2.shp</Parameter>
+</Outputs>
+
+
+<ResultView Tool='Eliminate'>
+<Inputs>
+<Parameter Label='Input Layer' Type='Layer'>sp2</Parameter>
+<Parameter Label='Eliminating polygon by border' Type='Scalar'>true</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>sp2elim.shp</Parameter>
+</Outputs>
+
+
+<ResultView Tool='SimplifyPolygon'>
+<Inputs>
+<Parameter Label='Input Features' Type='Layer'>sp2elim</Parameter>
+<Parameter Label='Simplification Algorithm' Type='Scalar'>POINT_REMOVE</Parameter>
+<Parameter Label='Simplification Tolerance' Type='Scalar'>5 Meters</Parameter>
+<Parameter Label='Minimum Area' Type='Scalar'>100 SquareMeters</Parameter>
+<Parameter Label='Handling Topological Errors' Type='Scalar'>RESOLVE_ERRORS</Parameter>
+<Parameter Label='Keep collapsed points' Type='Scalar'>false</Parameter>
+</Inputs>
+<Outputs>
+<Parameter Label='Output Feature Class' Type='Dataset'>arc_elim5.shp</Parameter>
+</Outputs>
+
+
+
+
