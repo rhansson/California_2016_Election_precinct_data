@@ -4,7 +4,7 @@ California precincts in TopoJSON format
 When developing [geotuple.org](http://rhansson.github.io/geotuple/), I was looking for detailed voting district (precinct) boundaries and came across [this repository](https://github.com/datadesk/california-2016-election-precinct-maps) from the __The Los Angeles Times Data Desk__. They had already done an excellent job of organizing all the information, but I thought I could tidy up the geographic data just a bit for my needs.
 
 ## Results
-The original shapefile data (*not provided in this repo*) is __95M__ while the resulting [TopoJSON](https://github.com/topojson) comes in at __*10M*__.
+The original shapefile (*not provided in this repo*) is __95M__ while the resulting [TopoJSON](https://github.com/topojson) comes in at __*10M*__.
 ```
 $ du -hc merged.*
 1.3M	merged.dbf
@@ -40,12 +40,12 @@ First of all, we want to project to a coordinate system based on a consistent un
 $ ogr2ogr -f "ESRI Shapefile" merged2.shp -t_srs EPSG:3310 merged.shp
 ```
 
-#### Eliminating sliver polygons
+### Eliminating gaps between county polygons
 In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case between counties, as seen in this example along the San Jouaqin River:
 x
 
 Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
-This collapses the gap as shown here:
+This collapses the gap (sliver) as shown here:
 x
 
 The resulting shapefile can be found in arcgis/arc_elim_shapefile.zip.
@@ -61,7 +61,7 @@ $ geo2topo merged2_geo.json > merged2_topo.json
 $ toposimplify -p 1 -f merged2_topo.json > merged3_topo.json
 $ topoquantize 1e6 merged3_topo.json > ca_precincts_topo.json
 ```
-[For reference, see:] (https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n)
+[For reference, see:](https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n)
 
 #### Loading data into PostGIS (*optional*)
 The first step is to extract the relevant precinct voting information from the original csv file (*not provided in this repo*): 
@@ -77,7 +77,7 @@ We can then import this file into the table __precinct_results__ by executing th
  24568
 (1 row)
 ```
-Secondly, we import the precinct boundaries into the table __precinct__ using OGR (optionally projecting back to WSG84):
+Secondly, we import the precinct boundaries into the table __precinct__ using OGR (optionally projecting back to WGS84):
 ```
 $ ogr2ogr -f PostgreSQL PG:"dbname='YOUR_NAME' user='YOUR_USER' password='YOUR_PW'" -nln precinct -select "pct16" -lco GEOM_TYPE="geography" -lco GEOMETRY_NAME=geog -s_srs EPSG:3310 -t_srs "EPSG:4326" ca_precincts_topo.json
 ```
