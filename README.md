@@ -28,10 +28,42 @@ I used the following tools:
 + [ArcGIS](http://desktop.arcgis.com/en/)
 + [PostGIS](http://postgis.net/)
 
-#### ArcGIS
-[_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm)
+### Combining county shapefiles
+This inital step combines the original county shapefiles (*not provided in this repo*) into one:
+```
+$ for f in shapefiles/*.shp; do ogr2ogr -update -append merged.shp $f -f "ESRI Shapefile"; done;
+```
 
-#### Loading data into PostGIS
+### Projecting to meters
+First of all, we want to project to a coordinate system based on a consistent unit (*as opposed to decimal degrees*). For California, an appropriate equal-area projection is "California Albers" (EPSG=3310) using meters:
+```
+$ ogr2ogr -f "ESRI Shapefile" merged2.shp -t_srs EPSG:3310 merged.shp
+```
+
+#### Eliminating sliver polygons
+In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case between counties, as seen in this example along the San Jouaqin River:
+x
+
+Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
+This collapses the gap as shown here:
+x
+
+The resulting shapefile can be found in arcgis/arc_elim_shapefile.zip.
+
+### Converting to TopoJSON
+First convert the output of the ArcGIS process to GeoJSON:
+```
+$ ogr2ogr -f "GeoJSON" merged2_geo.json -select "orig_fid pct16" arc_elim.shp
+```
+Finally, create the long awaited TopoJSON, while in the process further simplifying the geometry:
+```
+$ geo2topo merged2_geo.json > merged2_topo.json
+$ toposimplify -p 1 -f merged2_topo.json > merged3_topo.json
+$ topoquantize 1e6 merged3_topo.json > ca_precincts_topo.json
+```
+[For reference, see:] (https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n)
+
+#### Loading data into PostGIS (*optional*)
 The first step is to extract the relevant precinct voting information from the original csv file (*not provided in this repo*): 
 ```
 $ head -24569 all_precinct_results.csv > all_precinct_results2.csv
@@ -65,6 +97,7 @@ $ ogr2ogr -f "GeoJSON" merged.geojson -t_srs EPSG:3310 merged.shp
 $ geo2topo pct16=merged.geojson > merged.topojson
  buffer.js:495
     throw new Error('"toString()" failed');
+    ...
 ```
 Seemingly beacuse of hitting a [limitation in nodejs](https://github.com/nodejs/node/issues/3175) (*presumably due to too many coordinates*).
 
