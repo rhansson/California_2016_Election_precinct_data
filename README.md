@@ -107,5 +107,5 @@ Seemingly because of hitting a [limitation in nodejs](https://github.com/nodejs/
 
 Simplifying the input fixes the problem:
 ```
-$ ogr2ogr -f "GeoJSON" merged.geojson -simplify 5 -t_srs EPSG:3310 merged.shp
+$ ogr2ogr -f "GeoJSON" merged.geojson -simplify 5 -t_srs EPSG:3310 merged2.shp
 ```
