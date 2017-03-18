@@ -47,7 +47,7 @@ $ ogr2ogr -f "ESRI Shapefile" merged2.shp -t_srs EPSG:3310 merged.shp
 In order for TopoJSON to do it's "thing", we need to have coincident polygon boundaries. This is not always the case, as seen in this example between the Fresno and Madera counties along the San Joaqin River:
 ![Fig 2:](https://github.com/rhansson/California_2016_Election_precinct_data/blob/master/images/sanj_sliver1.png "sliver")
 
-Overcoming this issue involves a fairly complex process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
+Overcoming this issue involves a fairly length process, centering on the ArcGIS [_Eliminate_](http://desktop.arcgis.com/en/arcmap/10.3/tools/coverage-toolbox/eliminate.htm) command (the specific commands used are detailed in the arcgis/eliminate_process.xml file).
 
 This collapses the gap (sliver) as shown here:
 ![Fig 3:](https://github.com/rhansson/California_2016_Election_precinct_data/blob/master/images/sanj_sliver2.png "resolved")
@@ -70,7 +70,7 @@ For reference, see: [Command-Line Cartography, Part 3](https://medium.com/@mbost
 #### Loading data into PostGIS (*optional*)
 The first step is to extract the relevant precinct voting information from the original csv file (*not provided in this repo*): 
 ```
-$ head -24569 all_precinct_results.csv > all_precinct_results2.csv
+$ head -24569 final-results/all_precinct_results.csv > all_precinct_results2.csv
 ```
 We can then import this file into the table __precinct_results__ by executing the SQL script __import_precincts.sql__:
 ```
