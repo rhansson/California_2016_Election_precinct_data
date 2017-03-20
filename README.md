@@ -67,7 +67,7 @@ $ topoquantize 1e6 merged3_topo.json > ca_precincts_topo.json
 ```
 For reference, see: [Command-Line Cartography, Part 3](https://medium.com/@mbostock/command-line-cartography-part-3-1158e4c55a1e#.8dsdx4c1n)
 
-#### Loading data into PostGIS (*optional*)
+### Loading data into PostGIS (*optional*)
 The first step is to extract the relevant precinct voting information from the original csv file (*not provided in this repo*): 
 ```
 $ head -24569 final-results/all_precinct_results.csv > all_precinct_results2.csv
